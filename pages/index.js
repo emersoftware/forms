@@ -1,155 +1,201 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import React, { useState } from 'react';
-
+import Head from 'next/head';
 export default function Home() {
-  //State 
+  //State
   const [formContent, setFormContent] = useState([]);
-  const [onEdit, setOnEdit] = useState(false);
-  const [textField, setTextField] = useState("");
-  //Functions
+  const [option, setOption] = useState("");
+  //Methods
   //Add new element
   const addFormField = () => {
     const field = {
-      "name": 'field_' + formContent.length,
+      "id": 'field_' + formContent.length, //cambiar por otro id
+      "title": "untitled",
       "label": "untitled",
       "type": "text",
-      "list": [],
+      "options": [],
     }
     setFormContent([...formContent, field]);
   }
-  
-  const editField = (fieldName, fieldLabel) => {
+
+  const deleteField = (id) => {
     const formField = [...formContent];
-    const index = formField.findIndex(f => f.name === fieldName);
+    const index = formField.findIndex(f => f.id === id);
     if(index > -1) {
-      formField[index].label = fieldLabel;
+      formField.splice(index, 1);
     }
     setFormContent(formField);
   }
 
-  const editFieldType = (fieldName, fieldLabel) => {
+  const editFieldType = (fieldId, fieldType) => {
     const formField = [...formContent];
-    const index = formField.findIndex((field) => field.name === fieldName);
-    if(index > -1) {
-      formField[index].type = fieldLabel;
+    const index = formField.findIndex((field) => field.id === fieldId);
+    if (index > -1) {
+      formField[index].type = fieldType;
     }
     setFormContent(formField);
   }
 
-  const addFieldOption = (fieldName, option) => {
+  const editFieldTitle = (fieldId, fieldTitle) => {
+    const formFields = [...formContent];
+    const index = formFields.findIndex(f => f.id === fieldId);
+    if (index > -1) {
+      formFields[index].title = fieldTitle;
+    }
+    setFormContent(formFields);
+  }
+
+  const addOption = (fieldId, option) => {
     const formField = [...formContent];
-    const index = formField.findIndex(f => f.name === fieldName);
-    if(index > -1) {
-      if(option && option != ""){
-        formField[index].list.push(option);
-        };
-        setFormContent(formField);
-        setTextField("");
+    const index = formField.findIndex(f => f.id === fieldId);
+    if (index > -1) {
+      if (option && option != "") {
+          formField[index].options.push(option);
+      };
+      setFormContent(formField);
+    }
+  }
+
+  const deleteOption = (fieldId, option) => {
+    const formField = [...formContent];
+    const index = formField.findIndex(f => f.id === fieldId);
+    if (index > -1) {
+      const optionIndex = formField[index].options.findIndex(o => o === option);
+      if (optionIndex > -1) {
+        formField[index].options.splice(optionIndex, 1);
       }
-    
-    
+    }
+    setFormContent(formField);
   }
 
   return (
-    
-    <div className="container mx-auto px-4 h-screen">
-      <div className="flex flex-col w-full space-x-7 my-7">
-        <h1 className="text-4xl font-bold">form builder</h1>
-        <h2 className="text-2xl font-serif">build your form</h2>
-      </div>
-      <div className="bg-white shadow-lg rounded-md p-5 my-12">
-        {
-          formContent.map((field) => {
-            return (
-              <>
-              <div className='flex justify-between items-center space-y-2'>
-                <div key={field.name} className="block text-sm font-medium text-slate-500 capitalize">
+    <>
+      <Head 
+        title="Adestos Forms"
+        description="Crea tu formulario"  
+      />
+      <div className="container mx-auto px-4 w-2/4 h-full">
+        <div className="flex flex-col w-6/12 space-x-7 my-7">
+          <h1 className="text-4xl font-bold">Adestos-Forms</h1>
+          <h2 className="text-2xl font-bold">Crea tu formulario</h2>
+        </div>
+        <div className="bg-white shadow-lg rounded-md p-5 my-12">
+          {
+            formContent.map((field) => {
+              return (
+                <>
+                <div className="flex justify-between items-center space-y-2">
+                  <div key={field.id} className="block text-sm font-medium">
+                    <input type="text" value={field.title} onChange={(e) => editFieldTitle(field.id, e.target.value)} />
+                  </div>
+                  <div>
+                    <select onChange={(e) => editFieldType(field.id, e.target.value)}>
+                      <option value="text">Text</option>
+                      <option value="number">Number</option>
+                      <option value="date">Date</option>
+                      <option value="checkbox">Checkbox</option>
+                      <option value="radio">Radio</option>
+                      <option value="select">Select</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="my-2">
                   {
-                    onEdit ?
-                    <input type="text" value={field.label} onChange={(e)=>editField(field.name, e.target.value)} onBlur={() => setOnEdit(false)}/>
-                    :
-                    <label onClick={()=>setOnEdit(true)}>{field.label}</label>
-                    
+                    field.type === "text" && <input type="text" placeholder="Este es el input de texto" readOnly/>
                   }
-                </div>
-                <div>
-                  <select onChange={(e)=>editFieldType(field.name, e.target.value)}>
-                    <option value="text">text</option>
-                    <option value="textarea">textarea</option>
-                    <option value="checkbox">checkbox</option>
-                    <option value="radio">radio</option>
-                    <option value="select">select</option>
-                  </select>
-                </div>
-              </div>
-              <div className='my-2'>
-                {
-                  field.type === 'text' && <input type="text" className='px-5 shadow-sm'placeholder={field.type}/>
-                }
-                {
-                  field.type === 'textarea' && <textarea rows={4} className='px-5 shadow-sm'placeholder={field.type}/>
-                }
-                {
-                  field.type === 'checkbox' && 
-                   <>
-                    {
-                      field.list.map((item) => {
-                        return (
-                          <div>
-                            <input type="checkbox" className='px-5 shadow-sm'placeholder={field.type}/>
-                            <label>{item}</label>
-                          </div>
-                        )
-                      })
-                    }
-                    </>
-                }
-                {
-                  field.type === 'radio' &&
-                  <>
-                    { 
-                      field.list.map((item) => {
-                        return (
-                          <div>
-                            <input type="radio" className='shadow-sm'placeholder={field.type}/>
-                            <label>{item}</label>
-                          </div>  
-                        )
-                      })
-                    }
-                  </>
-                }
-                {
-                  
-                  field.type === 'select' &&
-                  <div className='my-2 flex flex-col space-y-2'>
-                    <select>
+                  {
+                    field.type === "number" && <input type="number" placeholder="" readOnly/>
+                  }
+                  {
+                    field.type === "date" && <input type="date" placeholder="" readOnly/>
+                  }
+                  {
+                    field.type === "checkbox" && 
+                    <div className="flex flex-col space-y-2">
                       {
-                        field.list.map((item) => {
+                        field.options.map((option) => {
                           return (
-                            <option value={item}>{item}</option>
+                            <div className="flex justify-between items-center">
+                              <div className="space-x-2">
+                                <input type="checkbox" id={option} value={option} name={field.title}/>
+                                <label forHtml={option}>{option}</label>
+                              </div>
+                              <button className="text-red-600 hover:text-red-900" onClick={() => deleteOption(field.id, option)}>Eliminar opcion</button>
+                            </div> 
                           )
                         })
                       }
-                    </select>
-                    <div className='flex justify-between items-center'>
-                      <input onChange={(e)=>setTextField(e.target.value)} type="text" className='px-5 shadow-sm'placeholder="añade una opcion" value={textField}/>                    
-                      <button onClick={()=>addFieldOption(field.name,textField)}className='bg-blue-500 text-white px-5 py-2 rounded-md'>añadir</button>  
+                      <div className="flex justify-between items-center">
+                        <input type="text" value={option} onChange={(e) => setOption(e.target.value)} />
+                        <button className="text-blue-900 hover:text-blue-600" onClick={() => addOption(field.id, option)}>Añadir opción</button>
+                      </div>
                     </div>
-                  </div>         
-                }
-              </div>
-              </>
-            )
-          })
-        }
-        <div className="relative w-full p-4">
-          <div className="absolute inset-x-0 bottom-0 h-12 flex justify-center">
-            <button onClick= {() => addFormField()} className='inline-flex bg-gray-800 hover:bg-gray-200 items-center p-3 text-sm text-slate-50 rounded-md'> añadir bloque </button>
+                  }
+                  {
+                    field.type === "radio" && 
+                    <div className='flex flex-col space-y-2'>
+                      {
+                        field.options.map((option) => {
+                          return (
+                            <div className="flex justify-between items-center">
+                              <div className="space-x-2">
+                                <input type="radio" id={option} value={option} name={field.title}/>
+                                <label forHtml={option}>{option}</label>
+                              </div>
+                              <button className="text-red-600 hover:text-red-900" onClick={() => deleteOption(field.id, option)}>Eliminar opcion</button>
+                            </div>
+                          )
+                        }) 
+                      }
+                      <div className="flex justify-between items-center">
+                        <input type="text" value={option} onChange={(e) => setOption(e.target.value)} />
+                        <button className="text-blue-900 hover:text-blue-600" onClick={() => addOption(field.id, option)}>Añadir opción</button>
+                      </div>
+                    </div>
+                  }    
+                  
+                  {
+                    field.type === "select" && 
+                    <div className="flex flex-col space-y-2">
+                      <select>
+                        {
+                          field.options.map((option) => {
+                            return (
+                              <option value={option}>{option}</option>
+                            )
+                          })
+                        }
+                      </select>
+                      {
+                        field.options.map((option) => {
+                          return (
+                            <div className="flex justify-between items-center">
+                              <h1>{option}</h1>
+                              <button className="text-red-600 hover:text-red-900" onClick={() => deleteOption(field.id, option)}>Eliminar opcion</button>
+                            </div>
+                          )
+                        })
+                      }
+                      <div className="flex justify-between items-center">
+                        <input type="text" value={option} onChange={(e) => setOption(e.target.value)} />
+                        <button className="text-blue-900 hover:text-blue-600" onClick={() => addOption(field.id, option)}>Añadir opción</button>
+                      </div>
+                    </div>
+                  }
+                </div>
+                <div className="flex justify-end">
+                  <button className="bg-red-700 hover:bg-red-200 text-neutral-100 rounded-md px-3 py-1" onClick={() => deleteField(field.id)}>Eliminar campo</button>
+                </div>
+                </>
+              )
+            })
+          }
+          <div className="relative w-full p-4">
+            <div className="absolute inset-x-0 bottom-0 h-12 flex justify-center">
+              <button onClick= {() => addFormField()} className='inline-flex bg-gray-800 hover:bg-gray-200 items-center px-3 py-1 text-slate-50 rounded-md'>Añadir campo</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
