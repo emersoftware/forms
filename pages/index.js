@@ -3,21 +3,25 @@ import Image from 'next/image'
 import React, { useState } from 'react';
 
 export default function Home() {
+  //State 
   const [formContent, setFormContent] = useState([]);
   const [onEdit, setOnEdit] = useState(false);
   const [textField, setTextField] = useState("");
-  const addFormBlock = () => {
-    const block = {
-      "name": 'block_' + formContent.length,
+  //Functions
+  //Add new element
+  const addFormField = () => {
+    const field = {
+      "name": 'field_' + formContent.length,
       "label": "untitled",
       "type": "text",
       "list": [],
     }
-    setFormContent([...formContent, block]);
+    setFormContent([...formContent, field]);
   }
+  
   const editField = (fieldName, fieldLabel) => {
     const formField = [...formContent];
-    const index = formField.findIndex((field) => field.name === fieldName);
+    const index = formField.findIndex(f => f.name === fieldName);
     if(index > -1) {
       formField[index].label = fieldLabel;
     }
@@ -56,10 +60,9 @@ export default function Home() {
       </div>
       <div className="bg-white shadow-lg rounded-md p-5 my-12">
         {
-          formContent.map((field, index) => {
+          formContent.map((field) => {
             return (
               <>
-              <div>
               <div className='flex justify-between items-center space-y-2'>
                 <div key={field.name} className="block text-sm font-medium text-slate-500 capitalize">
                   {
@@ -79,7 +82,6 @@ export default function Home() {
                     <option value="select">select</option>
                   </select>
                 </div>
-              </div>
               </div>
               <div className='my-2'>
                 {
@@ -144,7 +146,7 @@ export default function Home() {
         }
         <div className="relative w-full p-4">
           <div className="absolute inset-x-0 bottom-0 h-12 flex justify-center">
-            <button onClick= {() => addFormBlock()} className='inline-flex bg-gray-800 hover:bg-gray-200 items-center p-3 text-sm text-slate-50 rounded-md'> añadir bloque </button>
+            <button onClick= {() => addFormField()} className='inline-flex bg-gray-800 hover:bg-gray-200 items-center p-3 text-sm text-slate-50 rounded-md'> añadir bloque </button>
           </div>
         </div>
       </div>
