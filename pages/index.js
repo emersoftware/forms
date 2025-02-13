@@ -1,8 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
 import FormContainer from '../components/FormContainer';
+var x = 5;
 
 export default function Home() {
+  console.log("rendering home");
+  
+  if(x == 5) {
+    console.log('x is 5')
+  }
+
   return (
     <>
       <Head>
@@ -14,7 +21,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold">Adestos-Forms</h1>
           <h2 className="text-2xl font-bold">Crea tu formulario</h2>
         </div>
-        <FormContainer />
+        <FormContainer></FormContainer>
       </div>
     </>
   );

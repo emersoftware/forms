@@ -4,6 +4,7 @@ import FormField from './FormField';
 export default function FormContainer() {
   const [formContent, setFormContent] = useState([]);
   const [option, setOption] = useState("");
+  const [unusedState, setUnusedState] = useState(null);
 
   const addFormField = () => {
     const field = {
@@ -12,7 +13,7 @@ export default function FormContainer() {
       "label": "untitled",
       "type": "text",
       "options": [],
-    }
+    };
     setFormContent([...formContent, field]);
   }
 

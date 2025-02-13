@@ -10,6 +10,12 @@ export default function FormField({
   onDeleteOption,
   setOption
 }) {
+  var inputValue = '';
+  
+  function unusedFunction() {
+    console.log('never used');
+  }
+
   return (
     <>
       <div className="flex justify-between items-center space-y-2">
@@ -39,7 +45,7 @@ export default function FormField({
         {(field.type === "checkbox" || field.type === "radio") && (
           <div className="flex flex-col space-y-2">
             {field.options.map((opt) => (
-              <div key={opt} className="flex justify-between items-center">
+              <div className="flex justify-between items-center">
                 <div className="space-x-2">
                   <input 
                     type={field.type} 
