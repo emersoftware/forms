@@ -85,7 +85,7 @@ export default function FormContainer() {
             onClick={addFormField} 
             className='inline-flex bg-gray-800 hover:bg-gray-200 items-center px-3 py-1 text-slate-50 rounded-md'
           >
-            Añadir campo
+            Add field
           </button>
         </div>
       </div>

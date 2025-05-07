@@ -32,9 +32,9 @@ export default function FormField({
         </div>
       </div>
       <div className="my-2">
-        {field.type === "text" && <input type="text" placeholder="Este es el input de texto" readOnly/>}
-        {field.type === "number" && <input type="number" placeholder="" readOnly/>}
-        {field.type === "date" && <input type="date" placeholder="" readOnly/>}
+        {field.type === "text" && <input type="text" placeholder="This is the text input" readOnly/>}
+        {field.type === "number" && <input type="number" placeholder="This is the number input" readOnly/>}
+        {field.type === "date" && <input type="date" placeholder="This is the date input" readOnly/>}
         
         {(field.type === "checkbox" || field.type === "radio") && (
           <div className="flex flex-col space-y-2">
@@ -53,7 +53,7 @@ export default function FormField({
                   className="text-red-600 hover:text-red-900" 
                   onClick={() => onDeleteOption(field.id, opt)}
                 >
-                  Eliminar opcion
+                  Delete option
                 </button>
               </div>
             ))}
@@ -67,7 +67,7 @@ export default function FormField({
                 className="text-blue-900 hover:text-blue-600" 
                 onClick={() => onAddOption(field.id, option)}
               >
-                Añadir opción
+                Add option
               </button>
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function FormField({
                 className="text-blue-900 hover:text-blue-600" 
                 onClick={() => onAddOption(field.id, option)}
               >
-                Añadir opción
+                Add option
               </button>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function FormField({
           className="bg-red-700 hover:bg-red-200 text-neutral-100 rounded-md px-3 py-1" 
           onClick={() => onDelete(field.id)}
         >
-          Eliminar campo
+          Delete field
         </button>
       </div>
     </>
